@@ -341,36 +341,30 @@ void setup()
 }
 
 
-void loop()
-{
+void loop() {
   if(buflen < (BUFSIZE-1))
     get_command();
   #ifdef SDSUPPORT
-  card.checkautostart(false);
+    card.checkautostart(false);
   #endif
-  if(buflen)
-  {
+  if(buflen) {
     #ifdef SDSUPPORT
-      if(card.saving)
-      {
-	if(strstr(cmdbuffer[bufindr],"M29") == NULL)
-	{
-	  card.write_command(cmdbuffer[bufindr]);
-	  SERIAL_PROTOCOLLNPGM(MSG_OK);
-	}
-	else
-	{
-	  card.closefile();
-	  SERIAL_PROTOCOLLNPGM(MSG_FILE_SAVED);
-	}
+      if(card.saving) {
+        if(strstr(cmdbuffer[bufindr],"M29") == NULL) {
+          card.write_command(cmdbuffer[bufindr]);
+          SERIAL_PROTOCOLLNPGM(MSG_OK);
+        }
+        else {
+            card.closefile();
+            SERIAL_PROTOCOLLNPGM(MSG_FILE_SAVED);
+          }
       }
-      else
-      {
-	process_commands();
-      }
-    #else
+      else {
       process_commands();
-    #endif //SDSUPPORT
+      }
+      #else
+        process_commands();
+      #endif //SDSUPPORT
     buflen = (buflen-1);
     bufindr = (bufindr + 1)%BUFSIZE;
   }

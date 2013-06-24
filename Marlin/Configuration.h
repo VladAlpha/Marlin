@@ -8,8 +8,8 @@
 //User specified version info of THIS file to display in [Pronterface, etc] terminal window during startup.
 //Implementation of an idea by Prof Braino to inform user that any changes made
 //to THIS file by the user have been successfully uploaded into firmware.
-#define STRING_VERSION_CONFIG_H "2012-05-02" //Personal revision number for changes to THIS file.
-#define STRING_CONFIG_H_AUTHOR "erik" //Who made the changes.
+#define STRING_VERSION_CONFIG_H "2013-06-22" //Personal revision number for changes to THIS file.
+#define STRING_CONFIG_H_AUTHOR "Vlad" //Who made the changes.
 
 // This determines the communication speed of the printer
 #define BAUDRATE 250000
@@ -32,7 +32,7 @@
 // Gen3+ =9
 
 #ifndef MOTHERBOARD
-#define MOTHERBOARD 7
+#define MOTHERBOARD 33
 #endif
 
 
@@ -61,13 +61,13 @@
 // 52 is 200k thermistor - ATC Semitec 204GT-2 (1k pullup)
 // 55 is 100k thermistor - ATC Semitec 104GT-2 (Used in ParCan) (1k pullup)
 
-#define TEMP_SENSOR_0 -1
+#define TEMP_SENSOR_0 1
 #define TEMP_SENSOR_1 0
 #define TEMP_SENSOR_2 0
-#define TEMP_SENSOR_BED 0
+#define TEMP_SENSOR_BED 1
 
 // Actual temperature must be close to target for this long before M109 returns success
-#define TEMP_RESIDENCY_TIME 10	// (seconds)
+#define TEMP_RESIDENCY_TIME 8	// (seconds)
 #define TEMP_HYSTERESIS 3       // (degC) range of +/- temperatures considered "close" to the target one
 #define TEMP_WINDOW     1       // (degC) Window around target to start the recidency timer x degC early.
 
@@ -95,7 +95,7 @@
 // PID settings:
 // Comment the following line to disable PID and enable bang-bang.
 #define PIDTEMP
-#define PID_MAX 255 // limits current to nozzle; 255=full current
+#define PID_MAX 125 // limits current to nozzle; 255=full current 36 watt 177=25 watt 25=heater core
 #ifdef PIDTEMP
   //#define PID_DEBUG // Sends debug data to the serial port. 
   //#define PID_OPENLOOP 1 // Puts PID in open loop. M104/M140 sets the output power from 0 to PID_MAX
@@ -103,11 +103,22 @@
   #define K1 0.95 //smoothing factor withing the PID
   #define PID_dT ((16.0 * 8.0)/(F_CPU / 64.0 / 256.0)) //sampling period of the
 
+
+  #define  DEFAULT_Kp 14.24    //low resistance j-head  3 10.2 40, max set to 90
+  #define  DEFAULT_Ki 1.01
+  #define  DEFAULT_Kd 50.16 
+
 // If you are using a preconfigured hotend then you can use one of the value sets by uncommenting it
+// 12 V j-head, 5.6 ohm taped in temp probe
+//
+//  #define  DEFAULT_Kp 25.27
+//  #define  DEFAULT_Ki 2.02 
+//  #define  DEFAULT_Kd 79.08 
+
 // Ultimaker
-    #define  DEFAULT_Kp 22.2
-    #define  DEFAULT_Ki 1.08  
-    #define  DEFAULT_Kd 114  
+//    #define  DEFAULT_Kp 22.2
+//    #define  DEFAULT_Ki 1.08  
+//    #define  DEFAULT_Kd 114  
 
 // Makergear
 //    #define  DEFAULT_Kp 7.0
@@ -130,7 +141,7 @@
 // If your configuration is significantly different than this and you don't understand the issues involved, you proabaly 
 // shouldn't use bed PID until someone else verifies your hardware works.
 // If this is enabled, find your own PID constants below.
-//#define PIDTEMPBED
+#define PIDTEMPBED
 //
 //#define BED_LIMIT_SWITCHING
 
@@ -143,9 +154,9 @@
 #ifdef PIDTEMPBED
 //120v 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
 //from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, argressive factor of .15 (vs .1, 1, 10)
-    #define  DEFAULT_bedKp 10.00
-    #define  DEFAULT_bedKi .023
-    #define  DEFAULT_bedKd 305.4
+    #define  DEFAULT_bedKp 272.59  //525.48   // 67.86
+    #define  DEFAULT_bedKi 26.66   //68.53    //10.90
+    #define  DEFAULT_bedKd 696.71  //1007.34  //105.62
 
 //120v 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
 //from pidautotune
@@ -197,9 +208,9 @@
 #endif
 
 // The pullups are needed if you directly connect a mechanical endswitch between the signal and ground pins.
-const bool X_ENDSTOPS_INVERTING = true; // set to true to invert the logic of the endstops. 
-const bool Y_ENDSTOPS_INVERTING = true; // set to true to invert the logic of the endstops. 
-const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of the endstops. 
+const bool X_ENDSTOPS_INVERTING = false; // set to true to invert the logic of the endstops. 
+const bool Y_ENDSTOPS_INVERTING = false; // set to true to invert the logic of the endstops. 
+const bool Z_ENDSTOPS_INVERTING = false; // set to true to invert the logic of the endstops. 
 //#define DISABLE_MAX_ENDSTOPS
 
 // For Inverting Stepper Enable Pins (Active Low) use 0, Non Inverting (Active High) use 1
@@ -215,40 +226,40 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 #define DISABLE_E false // For all extruders
 
 #define INVERT_X_DIR true    // for Mendel set to false, for Orca set to true
-#define INVERT_Y_DIR false    // for Mendel set to true, for Orca set to false
-#define INVERT_Z_DIR true     // for Mendel set to false, for Orca set to true
-#define INVERT_E0_DIR false   // for direct drive extruder v9 set to true, for geared extruder set to false
-#define INVERT_E1_DIR false    // for direct drive extruder v9 set to true, for geared extruder set to false
-#define INVERT_E2_DIR false   // for direct drive extruder v9 set to true, for geared extruder set to false
+#define INVERT_Y_DIR true    // for Mendel set to true, for Orca set to false
+#define INVERT_Z_DIR false     // for Mendel set to false, for Orca set to true
+#define INVERT_E0_DIR true   // for direct drive extruder v9 set to true, for geared extruder set to false
+#define INVERT_E1_DIR true    // for direct drive extruder v9 set to true, for geared extruder set to false
+#define INVERT_E2_DIR true   // for direct drive extruder v9 set to true, for geared extruder set to false
 
 // ENDSTOP SETTINGS:
 // Sets direction of endstops when homing; 1=MAX, -1=MIN
 #define X_HOME_DIR -1
 #define Y_HOME_DIR -1
-#define Z_HOME_DIR -1
+#define Z_HOME_DIR 1
 
 #define min_software_endstops true //If true, axis won't move to coordinates less than HOME_POS.
 #define max_software_endstops true  //If true, axis won't move to coordinates greater than the defined lengths below.
 // Travel limits after homing
-#define X_MAX_POS 205
-#define X_MIN_POS 0
-#define Y_MAX_POS 205
-#define Y_MIN_POS 0
-#define Z_MAX_POS 200
-#define Z_MIN_POS 0
+#define X_MAX_POS 189
+#define X_MIN_POS -5
+#define Y_MAX_POS 280
+#define Y_MIN_POS -35
+#define Z_MAX_POS 155
+#define Z_MIN_POS -0.5
 
 #define X_MAX_LENGTH (X_MAX_POS - X_MIN_POS)
 #define Y_MAX_LENGTH (Y_MAX_POS - Y_MIN_POS)
 #define Z_MAX_LENGTH (Z_MAX_POS - Z_MIN_POS)
 
 // The position of the homing switches
-//#define MANUAL_HOME_POSITIONS  // If defined, manualy programed locations will be used
+#define MANUAL_HOME_POSITION  // If defined, manualy programed locations will be used
 //#define BED_CENTER_AT_0_0  // If defined the center of the bed is defined as (0,0)
 
 //Manual homing switch locations:
-#define MANUAL_X_HOME_POS 0
-#define MANUAL_Y_HOME_POS 0
-#define MANUAL_Z_HOME_POS 0
+#define MANUAL_X_HOME_POS -12
+#define MANUAL_Y_HOME_POS -35
+#define MANUAL_Z_HOME_POS 150.9
 
 //// MOVEMENT SETTINGS
 #define NUM_AXIS 4 // The axis order in all axis related arrays is X, Y, Z, E
@@ -256,15 +267,15 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 
 // default settings 
 
-#define DEFAULT_AXIS_STEPS_PER_UNIT   {78.7402,78.7402,200*8/3,760*1.1}  // default steps per unit for ultimaker 
-#define DEFAULT_MAX_FEEDRATE          {500, 500, 5, 45}    // (mm/sec)    
-#define DEFAULT_MAX_ACCELERATION      {9000,9000,100,10000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
+#define DEFAULT_AXIS_STEPS_PER_UNIT   {16*5.000*1.0101,16*5.0000*1.0154,16*200/2,1145} //LAST 834.13 plastic, 1138.97 metal
+#define DEFAULT_MAX_FEEDRATE          {500, 500, 7, 100}    // (mm/sec) (1200 theroetical max Z? motors proably 600 rpm)  300mm/min limit on Z?
+#define DEFAULT_MAX_ACCELERATION      {12000,12000,400,500}   // X, Y, Z, E maximum start speed for accelerated moves. stepped e to1000 from 500
 
-#define DEFAULT_ACCELERATION          3000    // X, Y, Z and E max acceleration in mm/s^2 for printing moves 
-#define DEFAULT_RETRACT_ACCELERATION  3000   // X, Y, Z and E max acceleration in mm/s^2 for r retracts
+#define DEFAULT_ACCELERATION          1500    // X, Y, Z and E max acceleration in mm/s^2 for printing moves 
+#define DEFAULT_RETRACT_ACCELERATION  4000   // X, Y, Z and E max acceleration in mm/s^2 for r retracts
 
 // 
-#define DEFAULT_XYJERK                20.0    // (mm/sec)
+#define DEFAULT_XYJERK                9.0    // (mm/sec)
 #define DEFAULT_ZJERK                 0.4     // (mm/sec)
 #define DEFAULT_EJERK                 5.0    // (mm/sec)
 
@@ -278,7 +289,7 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 // M501 - reads parameters from EEPROM (if you need reset them after you changed them temporarily).  
 // M502 - reverts to the default "factory settings".  You still need to store them in EEPROM afterwards if you want to.
 //define this to enable eeprom support
-//#define EEPROM_SETTINGS
+#define EEPROM_SETTINGS
 //to disable EEPROM Serial responses and decrease program space by ~1700 byte: comment this out:
 // please keep turned on if you can.
 //#define EEPROM_CHITCHAT

@@ -8,7 +8,7 @@
 #ifdef BED_LIMIT_SWITCHING
   #define BED_HYSTERESIS 2 //only disable heating if T>target+BED_HYSTERESIS and enable heating if T>target-BED_HYSTERESIS
 #endif
-#define BED_CHECK_INTERVAL 5000 //ms between checks in bang-bang control
+#define BED_CHECK_INTERVAL 50 // was 500, dropped 50 ms between checks in bang-bang control
 
 //// Heating sanity check:
 // This waits for the watchperiod in milliseconds whenever an M104 or M109 increases the target temperature
@@ -61,7 +61,7 @@
 //This is for controlling a fan to cool down the stepper drivers
 //it will turn on when any driver is enabled
 //and turn off after the set amount of seconds from last driver being disabled again
-//#define CONTROLLERFAN_PIN 23 //Pin used for the fan to cool controller, comment out to disable this function
+//#define CONTROLLERFAN_PIN 9 //Pin used for the fan to cool controller, comment out to disable this function
 #define CONTROLLERFAN_SEC 60 //How many seconds, after all motors were disabled, the fan should run
 
 //===========================================================================
