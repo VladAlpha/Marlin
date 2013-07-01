@@ -95,7 +95,7 @@
 // PID settings:
 // Comment the following line to disable PID and enable bang-bang.
 #define PIDTEMP
-#define PID_MAX 125 // limits current to nozzle; 255=full current 36 watt 177=25 watt 25=heater core
+#define PID_MAX 177 // limits current to nozzle; 255=full current 36 watt 177=25 watt 25=heater core
 #ifdef PIDTEMP
   //#define PID_DEBUG // Sends debug data to the serial port. 
   //#define PID_OPENLOOP 1 // Puts PID in open loop. M104/M140 sets the output power from 0 to PID_MAX
@@ -267,7 +267,7 @@ const bool Z_ENDSTOPS_INVERTING = false; // set to true to invert the logic of t
 
 // default settings 
 
-#define DEFAULT_AXIS_STEPS_PER_UNIT   {16*5.000*1.0101,16*5.0000*1.0154,16*200/2,1145} //LAST 834.13 plastic, 1138.97 metal
+#define DEFAULT_AXIS_STEPS_PER_UNIT   {16*5.000*1,16*5.0000*1,16*200/2,1145} //LAST 834.13 plastic, 1138.97 metal
 #define DEFAULT_MAX_FEEDRATE          {500, 500, 7, 100}    // (mm/sec) (1200 theroetical max Z? motors proably 600 rpm)  300mm/min limit on Z?
 #define DEFAULT_MAX_ACCELERATION      {12000,12000,400,500}   // X, Y, Z, E maximum start speed for accelerated moves. stepped e to1000 from 500
 
