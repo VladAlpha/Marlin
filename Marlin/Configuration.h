@@ -8,7 +8,7 @@
 //User specified version info of THIS file to display in [Pronterface, etc] terminal window during startup.
 //Implementation of an idea by Prof Braino to inform user that any changes made
 //to THIS file by the user have been successfully uploaded into firmware.
-#define STRING_VERSION_CONFIG_H "2013-06-22" //Personal revision number for changes to THIS file.
+#define STRING_VERSION_CONFIG_H "2013-07-29" //Personal revision number for changes to THIS file.
 #define STRING_CONFIG_H_AUTHOR "Vlad" //Who made the changes.
 
 // This determines the communication speed of the printer
@@ -69,7 +69,7 @@
 // Actual temperature must be close to target for this long before M109 returns success
 #define TEMP_RESIDENCY_TIME 8	// (seconds)
 #define TEMP_HYSTERESIS 3       // (degC) range of +/- temperatures considered "close" to the target one
-#define TEMP_WINDOW     1       // (degC) Window around target to start the recidency timer x degC early.
+#define TEMP_WINDOW     2       // (degC) Window around target to start the recidency timer x degC early.
 
 // The minimal temperature defines the temperature below which the heater will not be enabled It is used
 // to check that the wiring to the thermistor is not broken. 
@@ -95,7 +95,7 @@
 // PID settings:
 // Comment the following line to disable PID and enable bang-bang.
 #define PIDTEMP
-#define PID_MAX 177 // limits current to nozzle; 255=full current 36 watt 177=25 watt 25=heater core
+#define PID_MAX 210 // limits current to nozzle; 255=full current 36 watt 177=25 watt 25=heater core
 #ifdef PIDTEMP
   //#define PID_DEBUG // Sends debug data to the serial port. 
   //#define PID_OPENLOOP 1 // Puts PID in open loop. M104/M140 sets the output power from 0 to PID_MAX
@@ -109,6 +109,12 @@
   #define  DEFAULT_Kd 50.16 
 
 // If you are using a preconfigured hotend then you can use one of the value sets by uncommenting it
+
+// 24 V j-head, 22 ohm 26W
+// 13
+//.75
+// 48
+
 // 12 V j-head, 5.6 ohm taped in temp probe
 //
 //  #define  DEFAULT_Kp 25.27
@@ -154,9 +160,9 @@
 #ifdef PIDTEMPBED
 //120v 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
 //from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, argressive factor of .15 (vs .1, 1, 10)
-    #define  DEFAULT_bedKp 272.59  //525.48   // 67.86
-    #define  DEFAULT_bedKi 26.66   //68.53    //10.90
-    #define  DEFAULT_bedKd 696.71  //1007.34  //105.62
+    #define  DEFAULT_bedKp 84.1     //272.59  //525.48   // 67.86
+    #define  DEFAULT_bedKi 5.3      //26.66   //68.53    //10.90
+    #define  DEFAULT_bedKd 333.46   //696.71   //1007.34  //105.62
 
 //120v 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
 //from pidautotune
@@ -175,7 +181,7 @@
 //if PREVENT_DANGEROUS_EXTRUDE is on, you can still disable (uncomment) very long bits of extrusion separately.
 #define PREVENT_LENGTHY_EXTRUDE
 
-#define EXTRUDE_MINTEMP 170
+#define EXTRUDE_MINTEMP 145
 #define EXTRUDE_MAXLENGTH (X_MAX_LENGTH+Y_MAX_LENGTH) //prevent extrusion of very large distances.
 
 //===========================================================================
@@ -241,10 +247,19 @@ const bool Z_ENDSTOPS_INVERTING = false; // set to true to invert the logic of t
 #define min_software_endstops true //If true, axis won't move to coordinates less than HOME_POS.
 #define max_software_endstops true  //If true, axis won't move to coordinates greater than the defined lengths below.
 // Travel limits after homing
-#define X_MAX_POS 189
+/* Mendel Max 1.5+ with Alu extruder
+#define X_MAX_POS 210
 #define X_MIN_POS -5
 #define Y_MAX_POS 280
 #define Y_MIN_POS -35
+#define Z_MAX_POS 155
+#define Z_MIN_POS -0.5
+*/
+
+#define X_MAX_POS 208
+#define X_MIN_POS 0
+#define Y_MAX_POS 305
+#define Y_MIN_POS 26
 #define Z_MAX_POS 155
 #define Z_MIN_POS -0.5
 
@@ -257,8 +272,8 @@ const bool Z_ENDSTOPS_INVERTING = false; // set to true to invert the logic of t
 //#define BED_CENTER_AT_0_0  // If defined the center of the bed is defined as (0,0)
 
 //Manual homing switch locations:
-#define MANUAL_X_HOME_POS -12
-#define MANUAL_Y_HOME_POS -35
+#define MANUAL_X_HOME_POS 0    //Mendel Max 1.5+ -12
+#define MANUAL_Y_HOME_POS 0    //Mendel Max 1.5+ -35
 #define MANUAL_Z_HOME_POS 150.9
 
 //// MOVEMENT SETTINGS
@@ -267,9 +282,9 @@ const bool Z_ENDSTOPS_INVERTING = false; // set to true to invert the logic of t
 
 // default settings 
 
-#define DEFAULT_AXIS_STEPS_PER_UNIT   {16*5.000*1,16*5.0000*1,16*200/2,1145} //LAST 834.13 plastic, 1138.97 metal
-#define DEFAULT_MAX_FEEDRATE          {500, 500, 7, 100}    // (mm/sec) (1200 theroetical max Z? motors proably 600 rpm)  300mm/min limit on Z?
-#define DEFAULT_MAX_ACCELERATION      {12000,12000,400,500}   // X, Y, Z, E maximum start speed for accelerated moves. stepped e to1000 from 500
+#define DEFAULT_AXIS_STEPS_PER_UNIT   {16*5.000*1,16*5.0000*1,16*200/2, 502} //LAST 834.13 plastic, 1155 metal
+#define DEFAULT_MAX_FEEDRATE          {500, 500, 7, 300}    // (mm/sec) (1200 theroetical max Z? motors proably 600 rpm)  300mm/min limit on Z?
+#define DEFAULT_MAX_ACCELERATION      {12000,12000,400,100}   // X, Y, Z, E maximum start speed for accelerated moves. stepped e to1000 from 500
 
 #define DEFAULT_ACCELERATION          1500    // X, Y, Z and E max acceleration in mm/s^2 for printing moves 
 #define DEFAULT_RETRACT_ACCELERATION  4000   // X, Y, Z and E max acceleration in mm/s^2 for r retracts
